@@ -5,31 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MGASTRO - AI Kundli</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .glass { background: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center p-4">
+<body class="bg-slate-50 min-h-screen flex flex-col items-center p-4">
 
     <div class="text-center my-8">
         <div class="bg-orange-600 text-white w-14 h-14 flex items-center justify-center rounded-2xl text-3xl font-bold mx-auto mb-2 shadow-lg">M</div>
         <h1 class="text-3xl font-black text-slate-800 tracking-tighter">MGASTRO</h1>
     </div>
 
-    <div class="glass w-full max-w-md p-8 border border-white">
+    <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-xl border border-slate-200">
         
         <div id="step-1">
-            <h2 class="text-center text-slate-600 font-bold mb-8 text-xl">अपनी कुंडली रिपोर्ट प्राप्त करें</h2>
+            <h2 class="text-center text-slate-700 font-bold mb-8 text-xl">अपनी विस्तृत कुंडली रिपोर्ट प्राप्त करें</h2>
             <div class="space-y-5">
-                <div>
-                    <label class="text-xs font-bold text-slate-400 uppercase ml-1">आपका नाम</label>
-                    <input type="text" id="userName" placeholder="यहाँ नाम लिखें" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-400 uppercase ml-1">जन्मतिथि</label>
-                    <input type="date" id="userDob" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all">
-                </div>
-                <button onclick="generateReport()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 rounded-2xl shadow-xl transition-transform active:scale-95">
+                <input type="text" id="userName" placeholder="अपना नाम यहाँ लिखें" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all">
+                <input type="date" id="userDob" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-orange-500 outline-none transition-all">
+                <button onclick="generateReport()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 rounded-2xl shadow-lg transition-transform active:scale-95">
                     कुंडली देखें
                 </button>
             </div>
@@ -37,22 +28,17 @@
 
         <div id="step-loading" class="hidden text-center py-12">
             <div class="animate-bounce mb-4 text-4xl">🔮</div>
-            <p class="text-slate-600 font-bold">ग्रहों की स्थिति जाँची जा रही है...</p>
+            <p class="text-slate-600 font-bold">ग्रहों की गणना हो रही है, कृपया प्रतीक्षा करें...</p>
         </div>
 
         <div id="step-result" class="hidden">
-            <div class="bg-orange-50 rounded-2xl p-6 border-l-8 border-orange-500 mb-8">
+            <div class="bg-orange-50 rounded-2xl p-6 border-l-8 border-orange-500 mb-6">
                 <div id="reportOutput" class="text-slate-800 leading-relaxed whitespace-pre-wrap font-medium"></div>
             </div>
             
-            <div class="bg-yellow-100 p-6 rounded-3xl border-2 border-dashed border-yellow-400 text-center">
-                <p class="text-sm font-black text-yellow-800 mb-3 underline">विशेष: 10 पेज की संपूर्ण हस्तलिखित कुंडली</p>
-                <a href="upi://pay?pa=mukundgain13-1@okaxis&pn=MukundGain&am=199&cu=INR" class="inline-block bg-green-600 text-white px-10 py-4 rounded-full font-black shadow-lg">
-                    ₹199 में अभी पाएँ
-                </a>
-            </div>
-
-            <button onclick="location.reload()" class="w-full mt-6 text-slate-400 font-bold hover:text-orange-600 transition-colors">← वापस जाएँ</button>
+            <button onclick="location.reload()" class="w-full py-4 bg-slate-100 text-slate-600 font-bold rounded-2xl hover:bg-slate-200 transition-colors">
+                ← दूसरी कुंडली देखें
+            </button>
         </div>
     </div>
 
@@ -61,7 +47,7 @@
             const name = document.getElementById('userName').value;
             const dob = document.getElementById('userDob').value;
             
-            if(!name || !dob) { alert("कृपया पूरी जानकारी भरें"); return; }
+            if(!name || !dob) { alert("कृपया नाम और जन्मतिथि भरें"); return; }
 
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-loading').classList.remove('hidden');
@@ -77,22 +63,28 @@
                         model: "meta-llama/Llama-3-70b-chat-hf",
                         messages: [{
                             role: "system",
-                            content: "You are a senior Indian Astrologer. Provide a detailed, long, and encouraging horoscope in Hindi. Use headings for Career, Health, and Finance."
+                            content: "You are a professional Vedic Astrologer. Give a detailed, long horoscope in Hindi. Use headings for Personality, Career, and Health."
                         }, {
                             role: "user",
-                            content: `Name: ${name}, Date of Birth: ${dob}. Provide a 400-word detailed astrology reading.`
+                            content: `Name: ${name}, DOB: ${dob}. Provide a 400-word deep analysis in Hindi.`
                         }]
                     })
                 });
 
                 const data = await res.json();
-                document.getElementById('step-loading').classList.add('hidden');
-                document.getElementById('step-result').classList.remove('hidden');
-                document.getElementById('reportOutput').innerText = data.choices[0].message.content;
+                
+                if (data.choices && data.choices[0]) {
+                    document.getElementById('step-loading').classList.add('hidden');
+                    document.getElementById('step-result').classList.remove('hidden');
+                    document.getElementById('reportOutput').innerText = data.choices[0].message.content;
+                } else {
+                    throw new Error("Data not found");
+                }
 
             } catch (e) {
-                alert("सर्वर बिजी है, कृपया 10 सेकंड बाद फिर कोशिश करें।");
-                location.reload();
+                document.getElementById('step-loading').classList.add('hidden');
+                document.getElementById('step-1').classList.remove('hidden');
+                alert("सर्वर अभी व्यस्त है, कृपया एक बार फिर प्रयास करें।");
             }
         }
     </script>
