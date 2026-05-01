@@ -1,99 +1,48 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGASTRO - AI कुंडली</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; }
-    </style>
-</head>
-<body class="bg-slate-50 min-h-screen flex flex-col items-center p-4">
+<script>
+    const T_KEY = "key_CacUgD1wXk8JhS7WcGkCW"; 
+    const A_KEY = "ak-ecab78926aa2f1c02c390657c0bd73654a269e78";
 
-    <div class="w-full max-w-md flex flex-col items-center my-10">
-        <div class="bg-orange-600 text-white font-black text-5xl px-5 py-2 rounded-2xl shadow-2xl mb-3">M</div>
-        <h1 class="text-4xl font-extrabold tracking-tight text-slate-800 uppercase">MGASTRO</h1>
-        <div class="h-1.5 w-24 bg-orange-500 rounded-full mt-2"></div>
-    </div>
-
-    <main class="w-full max-w-md">
-        <div class="bg-white rounded-[2.5rem] shadow-2xl p-8 border border-slate-100">
-            
-            <div id="step-1" class="text-center">
-                <h2 class="text-xl font-bold text-slate-700 mb-8 uppercase tracking-wide">फ्री कुंडली रिपोर्ट</h2>
-                
-                <div class="space-y-6">
-                    <div class="text-left">
-                        <label class="text-xs font-bold text-slate-400 uppercase ml-2 mb-1 block">नाम</label>
-                        <input type="text" id="name" placeholder="अपना नाम लिखें" class="w-full p-4 bg-slate-100 rounded-2xl border-none focus:ring-2 focus:ring-orange-500 outline-none text-lg font-medium">
-                    </div>
-
-                    <div class="text-left">
-                        <label class="text-xs font-bold text-slate-400 uppercase ml-2 mb-1 block">जन्मतिथि</label>
-                        <input type="date" id="dob" class="w-full p-4 bg-slate-100 rounded-2xl border-none focus:ring-2 focus:ring-orange-500 outline-none text-lg font-medium">
-                    </div>
-                    
-                    <button onclick="getKundli()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-5 rounded-2xl shadow-lg transition-all active:scale-95 mt-6 text-xl uppercase tracking-wider">
-                        कुंडली देखें
-                    </button>
-                </div>
-            </div>
-
-            <div id="step-loader" class="hidden text-center py-12">
-                <div class="inline-block animate-spin w-16 h-16 border-t-4 border-orange-600 border-slate-200 rounded-full mb-6"></div>
-                <p class="text-slate-800 font-bold text-xl uppercase tracking-tighter">MGASTRO AI</p>
-                <p class="text-slate-500 text-sm mt-2 italic">ग्रहों की गणना की जा रही है...</p>
-            </div>
-
-            <div id="step-result" class="hidden animate-in fade-in zoom-in duration-500">
-                <div class="bg-orange-50 border-2 border-orange-200 p-6 rounded-3xl relative">
-                    <span class="absolute -top-3 left-6 bg-orange-600 text-white px-4 py-1 text-[10px] rounded-full uppercase font-black tracking-[0.2em] shadow-lg">MGASTRO Analysis</span>
-                    <div id="output" class="text-slate-700 leading-relaxed text-base mt-4 whitespace-pre-wrap font-medium"></div>
-                </div>
-                <button onclick="location.reload()" class="w-full mt-8 text-orange-600 font-black bg-white border-2 border-orange-100 py-4 rounded-2xl hover:bg-orange-50 transition-colors uppercase tracking-widest text-sm shadow-sm">वापस जाएँ</button>
-            </div>
-
-        </div>
-    </main>
-
-    <script>
-        // आपकी API Keys को सुरक्षित जोड़ दिया गया है
-        const T_KEY = "key_CacUgD1wXk8JhS7WcGkCW"; // Together AI (Meta) Key
-        const A_KEY = "ak-ecab78926aa2f1c02c390657c0bd73654a269e78"; // Astrology API Key
-
-        async function getKundli() {
-            const name = document.getElementById('name').value;
-            const dob = document.getElementById('dob').value;
-            
-            if(!name || !dob) { 
-                alert("कृपया नाम और जन्मतिथि दोनों भरें"); 
-                return; 
-            }
-
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('step-loader').classList.remove('hidden');
-
-            // 15 सेकंड का वेटिंग टाइम (AI प्रोसेसिंग फील के लिए)
-            setTimeout(() => {
-                document.getElementById('step-loader').classList.add('hidden');
-                document.getElementById('step-result').classList.remove('hidden');
-                
-                // यह रिस्पॉन्स भविष्य में AI से डायनामिक जुड़ सकता है
-                const response = `नमस्ते ${name} जी! 
-
-MGASTRO AI विश्लेषण के अनुसार:
-
-• आपकी जन्मतिथि (${dob}) के अनुसार आपकी राशि और नक्षत्रों का प्रभाव आपके व्यक्तित्व को काफी मजबूत बनाता है। 
-• करियर: आने वाले समय में आपको शुभ समाचार मिल सकते हैं, बस अपने काम पर ध्यान केंद्रित रखें।
-• उपाय: रोजाना सुबह सूर्य को जल अर्पित करें और सकारात्मक रहें।
-
-यह MGASTRO का ट्रायल वर्शन है।`;
-
-                document.getElementById('output').innerText = response;
-            }, 15000);
+    async function getKundli() {
+        const name = document.getElementById('name').value;
+        const dob = document.getElementById('dob').value;
+        
+        if(!name || !dob) { 
+            alert("कृपया नाम और जन्मतिथि भरें"); 
+            return; 
         }
-    </script>
-</body>
-</html>
+
+        document.getElementById('step-1').classList.add('hidden');
+        document.getElementById('step-loader').classList.remove('hidden');
+
+        try {
+            // Together AI को असली और बड़ी रिपोर्ट के लिए कॉल करना
+            const response = await fetch("https://api.together.xyz/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${T_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "meta-llama/Llama-3-70b-chat-hf",
+                    messages: [{
+                        role: "system",
+                        content: "You are a professional Vedic Astrologer. Give a very detailed 500-word horoscope report in Hindi."
+                    }, {
+                        role: "user",
+                        content: `Name: ${name}, DOB: ${dob}. कृपया इनके लिए करियर, स्वास्थ्य, धन और परिवार पर एक विस्तृत कुंडली रिपोर्ट तैयार करें और विशेष उपाय भी बताएं।`
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            const aiReport = data.choices[0].message.content;
+
+            document.getElementById('step-loader').classList.add('hidden');
+            document.getElementById('step-result').classList.remove('hidden');
+            document.getElementById('output').innerText = aiReport;
+
+        } catch (error) {
+            document.getElementById('output').innerText = "क्षमा करें, गणना में त्रुटि हुई। कृपया दोबारा प्रयास करें।";
+        }
+    }
+</script>
