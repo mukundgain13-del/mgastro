@@ -3,59 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGASTRO - AI Kundli</title>
+    <title>MGASTRO - AI विस्तृत कुंडली</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
 </head>
-<body class="bg-orange-50 min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-white min-h-screen flex flex-col items-center">
 
-    <div class="text-center mb-6">
-        <div class="bg-orange-600 text-white w-14 h-14 flex items-center justify-center rounded-2xl text-3xl font-bold mx-auto mb-2 shadow-lg">M</div>
-        <h1 class="text-3xl font-black text-slate-800 tracking-tighter">MGASTRO</h1>
+    <div class="text-center mt-8 mb-6">
+        <div class="bg-blue-800 text-white w-16 h-16 flex items-center justify-center rounded-full text-2xl font-black mx-auto mb-1 shadow-lg border-2 border-blue-900">
+            MG
+        </div>
+        <p class="text-[10px] font-bold text-blue-900 tracking-[0.2em] uppercase">mgastro</p>
     </div>
 
-    <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl border border-orange-100">
-        
-        <div id="input-section">
-            <h2 class="text-center text-slate-700 font-bold mb-8 text-xl">मुफ्त कुंडली रिपोर्ट</h2>
-            <div class="space-y-5">
-                <input type="text" id="nameInput" placeholder="अपना नाम लिखें" class="w-full p-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-orange-500 outline-none">
-                <input type="date" id="dobInput" class="w-full p-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-orange-500 outline-none">
-                <button onclick="getReport()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 rounded-2xl shadow-lg transition-transform active:scale-95">
-                    कुंडली देखें
+    <div class="w-full max-w-md px-6 text-center mb-10">
+        <div id="form-container">
+            <div class="flex flex-col items-center gap-3">
+                <button onclick="toggleInputs()" class="bg-blue-700 hover:bg-blue-800 text-white font-black py-4 px-10 rounded-2xl shadow-xl transition-transform active:scale-95 text-2xl">
+                    कुंडली
                 </button>
+                <span class="text-sm font-bold text-slate-500">
+                    (विस्तृत रिपोर्ट प्राप्त करें - 101 Rs.)
+                </span>
+            </div>
+
+            <div id="input-fields" class="hidden mt-6 space-y-4 bg-blue-50 p-6 rounded-[2rem] border border-blue-100 shadow-inner">
+                <h3 class="text-blue-900 font-bold mb-2">अपना विवरण भरें</h3>
+                <input type="text" id="custName" placeholder="अपना नाम लिखें" class="w-full p-4 bg-white border-2 border-blue-200 rounded-2xl outline-none focus:border-blue-600 transition-all">
+                <input type="date" id="custDob" class="w-full p-4 bg-white border-2 border-blue-200 rounded-2xl outline-none focus:border-blue-600 transition-all">
+                <button onclick="generateReport()" class="w-full bg-blue-800 text-white font-black py-4 rounded-2xl shadow-md hover:bg-blue-900">रिर्पोट तैयार करें</button>
             </div>
         </div>
 
-        <div id="loader" class="hidden text-center py-12">
-            <div class="animate-bounce mb-4 text-4xl">🔮</div>
-            <p class="text-slate-600 font-bold">AI गणना कर रहा है, कृपया रुकें...</p>
+        <div id="loading" class="hidden py-10">
+            <div class="animate-spin text-5xl mb-4">🔮</div>
+            <p class="text-blue-900 font-black italic">नक्षत्रों का विश्लेषण हो रहा है...</p>
         </div>
 
-        <div id="result-section" class="hidden">
-            <div class="bg-orange-50 rounded-2xl p-6 border-l-8 border-orange-500 mb-6 max-h-96 overflow-y-auto">
-                <div id="reportText" class="text-slate-800 leading-relaxed whitespace-pre-wrap font-medium"></div>
+        <div id="result" class="hidden bg-white rounded-[2rem] p-6 shadow-2xl border-t-4 border-blue-700 text-left">
+            <div id="reportArea" class="text-slate-800 leading-relaxed whitespace-pre-wrap font-medium text-sm max-h-[400px] overflow-y-auto pr-2"></div>
+            <button onclick="location.reload()" class="mt-6 w-full py-4 bg-slate-100 text-slate-500 font-bold rounded-2xl hover:bg-slate-200">← वापस डैशबोर्ड पर</button>
+        </div>
+    </div>
+
+    <div class="w-full bg-gradient-to-b from-blue-900 via-blue-800 to-blue-700 flex-grow p-10 rounded-t-[3.5rem] shadow-[0_-10px_25px_rgba(30,58,138,0.3)] text-white">
+        <div class="max-w-md mx-auto space-y-8">
+            <h2 class="text-3xl font-black italic text-center leading-tight">"आपका भविष्य आपके हाथों में - अपनी किस्मत का ताला खोलें!"</h2>
+            
+            <div class="space-y-5 text-lg">
+                <p class="flex items-center gap-3">
+                    <span class="bg-blue-500 p-1 rounded-full text-xs">✔</span> 
+                    <span><b>व्यक्तित्व:</b> अपनी असली शक्तियों को पहचानें।</span>
+                </p>
+                <p class="flex items-center gap-3">
+                    <span class="bg-blue-500 p-1 rounded-full text-xs">✔</span> 
+                    <span><b>करियर:</b> सफलता और धन लाभ के सटीक योग।</span>
+                </p>
+                <p class="flex items-center gap-3">
+                    <span class="bg-blue-500 p-1 rounded-full text-xs">✔</span> 
+                    <span><b>उपाय:</b> जीवन की बाधाओं को दूर करने के तरीके।</span>
+                </p>
             </div>
-            <button onclick="location.reload()" class="w-full py-4 bg-slate-100 text-slate-600 font-bold rounded-2xl hover:bg-slate-200">
-                ← वापस जाएँ
-            </button>
+
+            <div class="pt-8 border-t border-blue-400/40 text-center">
+                <p class="text-sm font-bold italic text-blue-200 leading-relaxed uppercase tracking-wider">
+                    "आप इस विस्तृत जानकारी के लिए छोटा सा योगदान देकर अपनी कुंडली प्राप्त कर सकते हैं।"
+                </p>
+            </div>
         </div>
     </div>
 
     <script>
-        async function getReport() {
-            const name = document.getElementById('nameInput').value;
-            const dob = document.getElementById('dobInput').value;
-            
-            if(!name || !dob) { 
-                alert("कृपया पूरी जानकारी भरें"); 
-                return; 
+        function toggleInputs() {
+            const fields = document.getElementById('input-fields');
+            fields.classList.toggle('hidden');
+            if(!fields.classList.contains('hidden')) {
+                window.scrollTo({ top: fields.offsetTop - 50, behavior: 'smooth' });
             }
+        }
 
-            document.getElementById('input-section').classList.add('hidden');
-            document.getElementById('loader').classList.remove('hidden');
+        async function generateReport() {
+            const name = document.getElementById('custName').value;
+            const dob = document.getElementById('custDob').value;
+            if(!name || !dob) { alert("कृपया नाम और जन्मतिथि भरें"); return; }
+
+            document.getElementById('form-container').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
 
             try {
-                const response = await fetch("https://api.together.xyz/v1/chat/completions", {
+                // यह आपकी सुरक्षित Vercel चाबी का उपयोग करेगा
+                const res = await fetch("https://api.together.xyz/v1/chat/completions", {
                     method: "POST",
                     headers: {
                         "Authorization": "Bearer 815c30800b411df83e586027a7604561858a7f45778a3c5a6988941f6f87491d",
@@ -64,26 +104,18 @@
                     body: JSON.stringify({
                         model: "meta-llama/Llama-3-70b-chat-hf",
                         messages: [
-                            { role: "system", content: "You are a senior Indian Astrologer. Give a detailed, 400-word horoscope in Hindi with sections for Personality, Career, and Wealth." },
-                            { role: "user", content: `Name: ${name}, DOB: ${dob}. Provide a full reading.` }
+                            { role: "system", content: "You are a world-class Vedic Astrologer. Provide a highly detailed 500-word professional horoscope in Hindi covering Nature, Career, Wealth, and Health." },
+                            { role: "user", content: `Name: ${name}, DOB: ${dob}. Detailed report in Hindi.` }
                         ]
                     })
                 });
-
-                const data = await response.json();
-                
-                if (data.choices && data.choices[0]) {
-                    document.getElementById('loader').classList.add('hidden');
-                    document.getElementById('result-section').classList.remove('hidden');
-                    document.getElementById('reportText').innerText = data.choices[0].message.content;
-                } else {
-                    throw new Error("Invalid API Response");
-                }
-
-            } catch (err) {
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('input-section').classList.remove('hidden');
-                alert("सर्वर अभी थोड़ा धीमा है, कृपया एक बार फिर बटन दबाएँ।");
+                const data = await res.json();
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('result').classList.remove('hidden');
+                document.getElementById('reportArea').innerText = data.choices[0].message.content;
+            } catch (e) {
+                alert("नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।");
+                location.reload();
             }
         }
     </script>
