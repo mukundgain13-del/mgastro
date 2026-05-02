@@ -1,65 +1,9 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGASTRO - कुंडली</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta http-equiv="refresh" content="0; url=/form.html">
 </head>
-<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white rounded-[2.5rem] p-8 shadow-2xl border border-blue-100">
-        
-        <div id="input-ui">
-            <h2 class="text-2xl font-black text-blue-900 mb-6 text-center italic">अपनी जानकारी भरें</h2>
-            <div class="space-y-4">
-                <input type="text" id="custName" placeholder="अपना नाम लिखें" class="w-full p-4 rounded-2xl border-2 border-blue-50 outline-none focus:border-blue-600 bg-blue-50/30 transition-all text-lg font-medium">
-                <input type="date" id="custDob" class="w-full p-4 rounded-2xl border-2 border-blue-50 outline-none focus:border-blue-600 bg-blue-50/30 transition-all text-lg font-medium">
-                <button onclick="getReport()" class="w-full bg-blue-700 text-white font-black py-5 rounded-2xl shadow-lg active:scale-95 transition-all text-xl mt-2">रिर्पोट तैयार करें</button>
-            </div>
-        </div>
-
-        <div id="loading" class="hidden text-center py-12">
-            <div class="animate-spin text-5xl mb-4">🔮</div>
-            <p class="text-blue-900 font-black italic tracking-wide">नक्षत्रों का विश्लेषण हो रहा है...</p>
-        </div>
-
-        <div id="result" class="hidden">
-            <div id="output" class="text-slate-800 leading-relaxed text-sm max-h-[450px] overflow-y-auto whitespace-pre-wrap font-medium p-2 bg-blue-50/20 rounded-xl"></div>
-            <button onclick="window.location.reload()" class="mt-6 w-full py-4 bg-slate-100 text-slate-500 font-bold rounded-2xl uppercase text-xs tracking-widest">← दोबारा प्रयास करें</button>
-        </div>
-    </div>
-
-    <script>
-        async function getReport() {
-            const n = document.getElementById('custName').value;
-            const d = document.getElementById('custDob').value;
-            if(!n || !d) { alert("कृपया नाम और जन्मतिथि भरें"); return; }
-
-            document.getElementById('input-ui').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
-
-            try {
-                // यह लाइन आपके api/generate.js को पुकारेगी
-                const res = await fetch("/api/generate", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name: n, dob: d })
-                });
-                const data = await res.json();
-                
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('result').classList.remove('hidden');
-                
-                if(data.text) {
-                    document.getElementById('output').innerText = data.text;
-                } else {
-                    document.getElementById('output').innerText = "सर्वर से जवाब नहीं मिला। अपनी API Key चेक करें।";
-                }
-            } catch (e) {
-                alert("कनेक्शन एरर!");
-                location.reload();
-            }
-        }
-    </script>
+<body>
+    रिडायरेक्ट हो रहा है... अगर नहीं हुआ तो <a href="/form.html">यहाँ क्लिक करें</a>।
 </body>
 </html>
