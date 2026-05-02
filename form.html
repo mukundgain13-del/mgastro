@@ -3,53 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGASTRO - विवरण भरें</title>
+    <title>MGASTRO - कुंडली विवरण</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-blue-50 min-h-screen flex items-center justify-center p-6">
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-white rounded-[2.5rem] p-8 shadow-2xl border border-blue-100">
+        
         <div id="input-ui">
-            <h2 class="text-2xl font-black text-blue-900 mb-6 text-center">अपनी जानकारी भरें</h2>
+            <h2 class="text-2xl font-black text-blue-900 mb-6 text-center italic">अपनी जानकारी भरें</h2>
             <div class="space-y-4">
-                <input type="text" id="name" placeholder="अपना नाम लिखें" class="w-full p-4 rounded-2xl border-2 border-blue-100 outline-none focus:border-blue-600 transition-all">
-                <input type="date" id="dob" class="w-full p-4 rounded-2xl border-2 border-blue-100 outline-none focus:border-blue-600 transition-all">
-                <button onclick="getReport()" class="w-full bg-blue-800 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-blue-900 transition-all">रिर्पोट तैयार करें</button>
+                <input type="text" id="custName" placeholder="अपना नाम लिखें" class="w-full p-4 rounded-2xl border-2 border-blue-50 outline-none focus:border-blue-600 bg-blue-50/30 transition-all text-lg font-medium">
+                <input type="date" id="custDob" class="w-full p-4 rounded-2xl border-2 border-blue-50 outline-none focus:border-blue-600 bg-blue-50/30 transition-all text-lg font-medium">
+                <button onclick="getReport()" class="w-full bg-blue-700 text-white font-black py-5 rounded-2xl shadow-lg active:scale-95 transition-all text-xl mt-2">रिर्पोट तैयार करें</button>
             </div>
         </div>
 
-        <div id="loading" class="hidden text-center py-10 font-bold text-blue-900 italic animate-pulse text-lg">🔮 नक्षत्रों की गणना हो रही है...</div>
+        <div id="loading" class="hidden text-center py-12">
+            <div class="animate-spin text-5xl mb-4">🔮</div>
+            <p class="text-blue-900 font-black italic tracking-wide">नक्षत्रों का विश्लेषण हो रहा है...</p>
+        </div>
+
         <div id="result" class="hidden">
-            <div id="output" class="text-slate-800 leading-relaxed text-sm max-h-[400px] overflow-y-auto whitespace-pre-wrap font-medium border-b border-slate-100 pb-4"></div>
-            <button onclick="window.location.href='index.html'" class="mt-6 w-full py-4 bg-blue-50 text-blue-800 font-bold rounded-2xl uppercase tracking-wider text-xs">← मुख्य पेज पर वापस</button>
+            <div id="output" class="text-slate-800 leading-relaxed text-sm max-h-[450px] overflow-y-auto whitespace-pre-wrap font-medium p-2 bg-blue-50/20 rounded-xl"></div>
+            <button onclick="window.location.href='index.html'" class="mt-6 w-full py-4 bg-slate-100 text-slate-500 font-bold rounded-2xl uppercase text-xs tracking-widest">← वापस डैशबोर्ड पर</button>
         </div>
     </div>
 
     <script>
         async function getReport() {
-            const n = document.getElementById('name').value;
-            const d = document.getElementById('dob').value;
+            const n = document.getElementById('custName').value;
+            const d = document.getElementById('custDob').value;
             if(!n || !d) { alert("कृपया नाम और जन्मतिथि भरें"); return; }
 
             document.getElementById('input-ui').classList.add('hidden');
             document.getElementById('loading').classList.remove('hidden');
 
             try {
-                // यह सीधा आपके Vercel API (Backend) से कनेक्ट होगा
+                // यह सीधा आपके api/generate.js को कॉल करेगा
                 const res = await fetch("/api/generate", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ name: n, dob: d })
                 });
                 const data = await res.json();
+                
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('result').classList.remove('hidden');
-                document.getElementById('output').innerText = data.text;
+                document.getElementById('output').innerText = data.text || "रिपोर्ट लोड नहीं हो पाई।";
             } catch (e) {
-                alert("सर्वर से संपर्क नहीं हो पाया।");
+                alert("कनेक्शन एरर। कृपया दोबारा प्रयास करें।");
                 location.reload();
             }
         }
     </script>
 </body>
 </html>
-
