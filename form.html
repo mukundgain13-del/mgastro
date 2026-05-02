@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGASTRO - कुंडली विवरण</title>
+    <title>MGASTRO - कुंडली</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
@@ -25,7 +25,7 @@
 
         <div id="result" class="hidden">
             <div id="output" class="text-slate-800 leading-relaxed text-sm max-h-[450px] overflow-y-auto whitespace-pre-wrap font-medium p-2 bg-blue-50/20 rounded-xl"></div>
-            <button onclick="window.location.href='index.html'" class="mt-6 w-full py-4 bg-slate-100 text-slate-500 font-bold rounded-2xl uppercase text-xs tracking-widest">← वापस डैशबोर्ड पर</button>
+            <button onclick="window.location.reload()" class="mt-6 w-full py-4 bg-slate-100 text-slate-500 font-bold rounded-2xl uppercase text-xs tracking-widest">← दोबारा प्रयास करें</button>
         </div>
     </div>
 
@@ -39,7 +39,7 @@
             document.getElementById('loading').classList.remove('hidden');
 
             try {
-                // यह सीधा आपके api/generate.js को कॉल करेगा
+                // यह लाइन आपके api/generate.js को पुकारेगी
                 const res = await fetch("/api/generate", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -49,9 +49,14 @@
                 
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('result').classList.remove('hidden');
-                document.getElementById('output').innerText = data.text || "रिपोर्ट लोड नहीं हो पाई।";
+                
+                if(data.text) {
+                    document.getElementById('output').innerText = data.text;
+                } else {
+                    document.getElementById('output').innerText = "सर्वर से जवाब नहीं मिला। अपनी API Key चेक करें।";
+                }
             } catch (e) {
-                alert("कनेक्शन एरर। कृपया दोबारा प्रयास करें।");
+                alert("कनेक्शन एरर!");
                 location.reload();
             }
         }
