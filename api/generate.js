@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // यह आपके Vercel से चाबी उठाएगा
   const apiKey = process.env.TOGETHER_API_KEY;
 
   if (req.method === 'POST') {
@@ -15,8 +14,8 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model: "meta-llama/Llama-3-70b-chat-hf",
           messages: [
-            { role: "system", content: "आप एक महान भारतीय ज्योतिषी हैं। हिंदी में विस्तार से कुंडली रिपोर्ट लिखें।" },
-            { role: "user", content: `नाम: ${name}, जन्मतिथि: ${dob}। कृपया भविष्यफल बताएं।` }
+            { role: "system", content: "आप एक विद्वान भारतीय ज्योतिषी हैं। हिंदी में विस्तृत कुंडली रिपोर्ट लिखें।" },
+            { role: "user", content: `नाम: ${name}, जन्मतिथि: ${dob}। कृपया इनका भविष्यफल और ज्योतिषीय विश्लेषण विस्तार से दें।` }
           ]
         })
       });
@@ -24,7 +23,7 @@ export default async function handler(req, res) {
       const data = await response.json();
       res.status(200).json({ text: data.choices[0].message.content });
     } catch (error) {
-      res.status(500).json({ error: "सर्वर एरर" });
+      res.status(500).json({ error: "सर्वर रिस्पॉन्स नहीं दे रहा है" });
     }
   } else {
     res.status(405).json({ error: "Method not allowed" });
