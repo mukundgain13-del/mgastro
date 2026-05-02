@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGASTRO - विवरण भरें</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-50 min-h-screen flex items-center justify-center p-6">
+    <div class="w-full max-w-md bg-white rounded-[2.5rem] p-8 shadow-2xl border border-blue-100">
+        <div id="input-ui">
+            <h2 class="text-2xl font-black text-blue-900 mb-6 text-center">अपनी जानकारी भरें</h2>
+            <div class="space-y-4">
+                <input type="text" id="name" placeholder="अपना नाम लिखें" class="w-full p-4 rounded-2xl border-2 border-blue-100 outline-none focus:border-blue-600 transition-all">
+                <input type="date" id="dob" class="w-full p-4 rounded-2xl border-2 border-blue-100 outline-none focus:border-blue-600 transition-all">
+                <button onclick="getReport()" class="w-full bg-blue-800 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-blue-900 transition-all">रिर्पोट तैयार करें</button>
+            </div>
+        </div>
+
+        <div id="loading" class="hidden text-center py-10 font-bold text-blue-900 italic animate-pulse text-lg">🔮 नक्षत्रों की गणना हो रही है...</div>
+        <div id="result" class="hidden">
+            <div id="output" class="text-slate-800 leading-relaxed text-sm max-h-[400px] overflow-y-auto whitespace-pre-wrap font-medium border-b border-slate-100 pb-4"></div>
+            <button onclick="window.location.href='index.html'" class="mt-6 w-full py-4 bg-blue-50 text-blue-800 font-bold rounded-2xl uppercase tracking-wider text-xs">← मुख्य पेज पर वापस</button>
+        </div>
+    </div>
+
+    <script>
+        async function getReport() {
+            const n = document.getElementById('name').value;
+            const d = document.getElementById('dob').value;
+            if(!n || !d) { alert("कृपया नाम और जन्मतिथि भरें"); return; }
+
+            document.getElementById('input-ui').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+
+            try {
+                // यह सीधा आपके Vercel API (Backend) से कनेक्ट होगा
+                const res = await fetch("/api/generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: n, dob: d })
+                });
+                const data = await res.json();
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('result').classList.remove('hidden');
+                document.getElementById('output').innerText = data.text;
+            } catch (e) {
+                alert("सर्वर से संपर्क नहीं हो पाया।");
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
+
